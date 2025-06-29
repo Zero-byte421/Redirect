@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membuka CTRL + Coffee...</title>
+    <!-- Styling sederhana untuk halaman perantara -->
+    <style>
+        :root {
+            --primary: #1A3C34;
+            --accent: #2E6659;
+            --light: #FFFFFF;
+            --gray: #F1F1F1;
+        }
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            text-align: center; 
+            padding: 50px 20px; 
+            background-color: var(--gray); 
+            color: var(--primary); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container { 
+            max-width: 450px; 
+            margin: auto;
+            background-color: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .loader { 
+            border: 5px solid var(--gray); 
+            border-top: 5px solid var(--accent); 
+            border-radius: 50%; 
+            width: 50px; 
+            height: 50px; 
+            animation: spin 1.5s linear infinite; 
+            margin: 25px auto; 
+        }
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        .fallback-link { 
+            color: var(--accent); 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 14px;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>CTRL + Coffee</h1>
+        <p>Mencoba membuka situs di browser utama Anda untuk pengalaman terbaik...</p>
+        <div class="loader"></div>
+        <a id="fallback-link" href="https://ctrl-coffee.vercel.app/">Jika tidak dialihkan, klik di sini</a>
+    </div>
+
+    <script>
+        (function() {
+            // URL tujuan akhir Anda
+            const targetUrl = "https://ctrl-coffee.vercel.app/";
+
+            // URL dengan skema intent untuk memaksa membuka di Chrome (hanya berfungsi di Android)
+            // Ini memberitahu sistem Android: "Buka URL ini menggunakan aplikasi com.android.chrome"
+            const intentUrl = "intent://ctrl-coffee.vercel.app/#Intent;scheme=https;package=com.android.chrome;end;";
+            
+            // Atur tautan fallback untuk pengguna iOS atau jika intent gagal
+            document.getElementById('fallback-link').href = targetUrl;
+
+            // Langsung coba alihkan ke intent URL
+            // Di Android: akan memicu dialog "Buka dengan Chrome" atau langsung membukanya.
+            // Di iOS: tidak akan melakukan apa-apa.
+            window.location.href = intentUrl;
+
+            // Atur waktu tunggu (timeout).
+            // Jika setelah 2500 milidetik (2.5 detik) pengguna masih di halaman ini,
+            // berarti intent gagal (kemungkinan besar karena ini iOS atau tidak ada Chrome).
+            // Maka, kita alihkan ke URL target secara normal sebagai cadangan.
+            setTimeout(function() {
+                window.location.replace(targetUrl);
+            }, 2500);
+        })();
+    </script>
+</body>
+</html>
